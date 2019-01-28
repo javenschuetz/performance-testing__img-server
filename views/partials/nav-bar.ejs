@@ -1,0 +1,19 @@
+<header>
+  <nav>
+    <div class="bb-navbar">
+      <div class="bb-navbar-header" style="flex-grow: 1">
+        <a href="/"><img src="" alt="logo">PostureTracking.com</a>
+      </div>
+      <div style="flex-grow: 4"></div>
+      <ul class="bb-navbar-items" style="flex-grow: 2">
+        <%if(logged_in) { %>
+          <li><a href="/dashboard">Dashboard</a></li>
+          <li><a href="/accounts/logout">Logout</a></li>
+        <%} else {%>
+          <li><a href="/accounts/register">Register %></a></li>
+          <li><a href="/accounts/login">Login</a></li>
+        <% } %>
+      </ul>
+    </div>
+  </nav>
+</header>
