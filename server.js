@@ -44,10 +44,19 @@ app.use((req, res, next) => {
         return next();
     } else {
         // typical step to put some user info on the request object. Stubbed out.
-        req.session.user = 'timmay';
+        req.user = 'timmay';
         return next();
     }
 });
+
+// confirms that login was verified above
+function login_required(req, res, next) {
+    if (!req.user) {
+        return res.redirect('/login');
+    }
+
+    return next();
+}
 
 
 
@@ -61,7 +70,7 @@ app.post('/login', (req, res) => {
     return res.redirect('/dashboard');
 });
 
-app.get('/dashboard', (req, res) => {
+app.get('/dashboard', login_required, (req, res) => {
     res.render('dashboard');
 });
 
