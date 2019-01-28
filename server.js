@@ -51,7 +51,7 @@ app.use((req, res, next) => {
 
 // confirms that login was verified above
 function login_required(req, res, next) {
-    if (!req.user) {
+    if (!req.session.user_id) {
         return res.redirect('/login');
     }
 
@@ -62,6 +62,7 @@ function login_required(req, res, next) {
 
 // ********************************************************************** routes
 app.get('/login', (req, res) => {
+    req.session.user_id = 123;
     res.render('login');
 });
 
