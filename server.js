@@ -74,7 +74,7 @@ app.post('/login', (req, res) => {
 });
 
 // mostly to reset state between fake user sessions
-router.get('/logout', (req, res) => {
+app.get('/logout', (req, res) => {
     req.session.reset();
     res.clearCookie("session");
     res.redirect('/');
