@@ -65,18 +65,16 @@ app.get('/login', (req, res) => {
 });
 
 // just gives us a real life bcrypt hash to compare our fake password to
-let hash;
-bcrypt.genSalt(10, function(err, salt) {
-    bcrypt.hash("stronk password", salt, (err, result) => {
-        hash = hash;
-    });
-});
+const hash = bcrypt.hashSync('super secure', 14);
 
 app.post('/login', (req, res) => {
     // simulate a password hash performed at login time.
     // note: does not actually care if password matches
+    const hrstart = process.hrtime();
     bcrypt.compare('not fake at all', hash, (err, result) => {
         req.session.user_id = 123;
+        const elapsed = process.hrtime(hrstart);
+        console.log((elapsed[0] * 1000) + (elapsed[1]/100000000), 'ms');
         return res.redirect('/dashboard');
     });
     // client-sessions created a session, this adds some user data to it
@@ -90,7 +88,6 @@ app.get('/logout', (req, res) => {
 });
 
 app.get('/dashboard', login_required, (req, res) => {
-    console.log(os.cpus().length);
     res.render('dashboard');
 });
 
