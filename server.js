@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs'); // cryptographic hashing algorithm for passw
 const body_parser = require('body-parser'); // to give us access to body of http (post) requests
 const client_sessions = require('client-sessions'); // mozilla library to implement encrypted client-side sessions
 const express = require('express');
-
+const os = require('os');
 
 
 // ****************************************************************** some setup
@@ -64,13 +64,22 @@ app.get('/login', (req, res) => {
     res.render('login');
 });
 
+// just gives us a real life bcrypt hash to compare our fake password to
+let hash;
+bcrypt.genSalt(10, function(err, salt) {
+    bcrypt.hash("stronk password", salt, (err, result) => {
+        hash = hash;
+    });
+});
+
 app.post('/login', (req, res) => {
     // simulate a password hash performed at login time.
-    // note: does not actually compare passwords
-    !bcrypt.compareSync(req.body.password, 'password');
+    // note: does not actually care if password matches
+    bcrypt.compare('not fake at all', hash, (err, result) => {
+        req.session.user_id = 123;
+        return res.redirect('/dashboard');
+    });
     // client-sessions created a session, this adds some user data to it
-    req.session.user_id = 123;
-    return res.redirect('/dashboard');
 });
 
 // mostly to reset state between fake user sessions
@@ -81,6 +90,7 @@ app.get('/logout', (req, res) => {
 });
 
 app.get('/dashboard', login_required, (req, res) => {
+    console.log(os.cpus().length);
     res.render('dashboard');
 });
 
