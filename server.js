@@ -26,14 +26,16 @@ app.use(body_parser.urlencoded({
 // set up client-side sessions
 app.use(client_sessions({
     cookieName: 'session',
-    secret: process.env.SESSION_SECRET, // basically a symmetric encryption key
+    // This is the wrong way to do secrets in a real app, and is just done
+    // to simplify performance testing.
+    secret: 'bad secret todo warning', // basically a symmetric encryption key
     duration: 1000 * 60 * 30, // 30 minutes
     activeDuration: 1000 * 60 * 5,
     cookie: {
         path: '/',
         httpOnly: true,
         sameSite: true,
-        secureProxy: !process.env.IS_DEV, // only relevant for https
+        // secure: !process.env.IS_DEV, // only relevant for https
         ephemeral: true
     }
 }));
@@ -73,8 +75,8 @@ app.post('/login', (req, res) => {
     const hrstart = process.hrtime();
     bcrypt.compare('not fake at all', hash, (err, result) => {
         req.session.user_id = 123;
-        const elapsed = process.hrtime(hrstart);
-        console.log((elapsed[0] * 1000) + (elapsed[1]/100000000), 'ms');
+        // const elapsed = process.hrtime(hrstart);
+        // console.log((elapsed[0] * 1000) + (elapsed[1]/100000000), 'ms');
         return res.redirect('/dashboard');
     });
     // client-sessions created a session, this adds some user data to it

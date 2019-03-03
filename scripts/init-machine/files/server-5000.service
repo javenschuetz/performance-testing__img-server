@@ -1,0 +1,22 @@
+[Service]
+ExecStart=/usr/bin/node /vagrant/server.js
+
+Restart=always
+
+StartLimitBurst=100
+StartLimitInterval=3
+
+StandardOutput=syslog
+
+StandardError=syslog
+
+SyslogIdentifier=node-app-1
+
+User=vagrant
+
+Group=vagrant
+
+Environment=NODE_ENV=production SERVER_PORT=9000
+
+[Install]
+WantedBy=multi-user.target
