@@ -39,7 +39,7 @@ Note that autoscaling will do this for us after we make an AMI
 3. vpc
 	- use the default one (for now)
 4. use rsync to transfer the code over
-	- `rsync -avzhe ssh my-server/ my-server:/opt/app`
+	- `rsync -avzhe ssh my-server/ my-server:/opt/app --exclude ".git"`
 	- note: may require a manual step
 5. go to init machine directory, THEN execute init machine.sh
 
